@@ -1,0 +1,15 @@
+black
+flake8
+line-profiler
+mypy
+neat-python
+neats
+pip-chill
+pre-commit
+pycln
+pygame
+pylint
+pytest
+snakeviz
+tox
+vulture
