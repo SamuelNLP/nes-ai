@@ -1,10 +1,8 @@
-"""
-Tetris represented as an openai nes environment.
-"""
+"""Tetris represented as an openai nes environment."""
 
 import random
+
 from pathlib import Path
-from typing import Dict, Optional
 
 import numpy as np
 
@@ -15,9 +13,7 @@ from nes_ai.tetris.piece import Piece, build_pieces
 
 
 class Tetris(BaseEnv):
-    """
-    A class that makes a custom NesEnv for tetris.
-    """
+    """A class that makes a custom NesEnv for tetris."""
 
     RAM_INPUT_MAP = {
         Info.SCORE: (0x0053, 0x0054, 0x0055),
@@ -40,13 +36,14 @@ class Tetris(BaseEnv):
         0x05: GamePhase.DEMO,
     }
 
-    def __init__(self, pieces: Optional[Dict[int, Piece]] = None):
+    def __init__(self, pieces: dict[int, Piece] | None = None):
         super().__init__(str(Path(__file__).parents[1] / "roms" / "tetris.nes"))
         self.reset()
         self._pieces = pieces or build_pieces()
 
     @property
     def stats(self) -> Statistics:
+        """The current game statistics."""
         return Statistics(
             score=self._read_bytes(Info.SCORE),
             pieces=self._read_byte(Info.PIECES) or 0,
@@ -55,13 +52,15 @@ class Tetris(BaseEnv):
         )
 
     @property
-    def game_phase(self) -> Optional[GamePhase]:
+    def game_phase(self) -> GamePhase | None:
+        """The current game phase."""
         if phase := self._read_byte(Info.PHASE):
             return self.GAME_PHASE_OUTPUT_MAP.get(phase)
         return None
 
     @property
     def piece(self) -> CurrentPiece:
+        """The current piece."""
         if piece_address := self._read_byte(Info.PIECE_ID):
             piece = self._pieces.get(piece_address)
             position = self._read_bytes_array(Info.PIECE_XY, big_endian=True)
@@ -72,13 +71,15 @@ class Tetris(BaseEnv):
         return CurrentPiece()
 
     @property
-    def next_piece(self) -> Optional[Piece]:
+    def next_piece(self) -> Piece | None:
+        """The next piece."""
         if next_piece_address := self._read_byte(Info.PIECE_ID_NEXT):
             return self._pieces.get(next_piece_address)
         return None
 
     @property
     def field(self) -> Field:
+        """Field as an array."""
         np_field = np.array(self._read_bytes_array(Info.FIELD, big_endian=False))
         np_field = np.where(np_field == 0xEF, 0, 1)
 

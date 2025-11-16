@@ -1,27 +1,24 @@
-"""
-Base env for every nes game
-"""
+"""Base env for every nes game."""
 
 from enum import Enum
-from typing import Dict, Optional, Sequence, Tuple
+from typing import Sequence
 
 from nes_py import NESEnv
-
-from nes_ai.util.prerequisites import require_type
+from prerequisites import require_type
 
 
 class BaseEnv(NESEnv):
-    """
-    A class that makes a custom NesEnv
-    """
+    """A class that makes a custom NesEnv."""
 
     # ram map for the specific environment
     # should have a enum as key and either a hex address or sequence as values
-    RAM_INPUT_MAP: Dict = dict()
+    RAM_INPUT_MAP: dict = {}
 
-    def _read_byte(self, key: Enum) -> Optional[int]:
+    def _read_byte(self, key: Enum) -> int | None:
         """
-        Reads a single address from the RAM, given that the address is in the enum
+        Reads a single address from the RAM,
+            given that the address is in the enum.
+
         """
         addr = self.RAM_INPUT_MAP.get(key)
 
@@ -33,6 +30,7 @@ class BaseEnv(NESEnv):
         """
         Reads a sequence of addresses from the RAM and takes into account what are the
             most significant bytes, considering the endianness.
+
         """
         values = self._read_bytes_array(key, big_endian)
 
@@ -43,10 +41,11 @@ class BaseEnv(NESEnv):
 
         return result
 
-    def _read_bytes_array(self, key: Enum, big_endian: bool = False) -> Tuple[int, ...]:
+    def _read_bytes_array(self, key: Enum, big_endian: bool = False) -> tuple[int, ...]:
         """
         Reads a sequence of addresses from the RAM and takes into account what are the
             most significant bytes, considering the endianness.
+
         """
         addrs = require_type(self.RAM_INPUT_MAP.get(key), Sequence)
         result = tuple(self.ram[addrs[0] : addrs[-1] + 1])

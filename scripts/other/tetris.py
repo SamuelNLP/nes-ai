@@ -1,17 +1,17 @@
-"""
-A NEAT run on Tetris using openai api in parallel
-"""
+"""A NEAT run on Tetris using openai api in parallel."""
 
 import logging
 import os
 import pickle
 import random
+
 from datetime import datetime
 from multiprocessing import Pool
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from neats.genetic import Genetic, NetworkShape
 from neats.mutation import Mutation
 from neats.network import Network
@@ -46,9 +46,7 @@ mutation_probability = {
 
 
 def not_in_play(tetris: Tetris, player: Joypad):
-    """
-    Deals with the game when not in play
-    """
+    """Deals with the game when not in play."""
     if tetris.game_phase not in (GamePhase.PLAY, GamePhase.LEVEL_AND_HEIGHT):
         player.press((Button.START,), delay=5)
     elif tetris.game_phase == GamePhase.LEVEL_AND_HEIGHT:
@@ -61,9 +59,7 @@ def not_in_play(tetris: Tetris, player: Joypad):
 
 
 def tetris_run(individual: Network, tetris: Tetris, player: Joypad):
-    """
-    A tetris run
-    """
+    """A tetris run."""
     while True:
         tetris.render()
 
@@ -101,10 +97,8 @@ def tetris_run(individual: Network, tetris: Tetris, player: Joypad):
 
 
 def individual_run(individual: Network):
-    """
-    An individual run
-    """
-    random.seed(datetime.now())
+    """An individual run."""
+    random.seed(int(datetime.now().timestamp()))
     tetris = Tetris()
     player = Joypad(JoypadSpace(tetris, MOVEMENT))
 
@@ -138,8 +132,8 @@ if __name__ == "__main__":
         mutation_probability=mutation_probability,
     )
 
-    average_fitness_list = list()
-    max_fitness_list = list()
+    average_fitness_list = []
+    max_fitness_list = []
 
     for index in range(ITERATIONS):
         population = genetic.population

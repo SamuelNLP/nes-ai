@@ -1,10 +1,8 @@
-"""
-A representation of a joypad
-"""
+"""A representation of a joypad."""
 
 from enum import Enum
 from itertools import combinations
-from typing import Dict, Sequence, Tuple
+from typing import Sequence
 
 from nes_py.wrappers import JoypadSpace
 
@@ -21,9 +19,7 @@ BUTTON_DELAY = 2  # steps
 
 
 class Button(Enum):
-    """
-    Possible buttons
-    """
+    """Possible buttons."""
 
     A = "A"
     B = "B"
@@ -37,6 +33,8 @@ class Button(Enum):
 
 
 class Joypad:
+    """A joypad."""
+
     BUTTON_DICT = {
         tuple([Button(name) for name in values]): index
         for index, values in enumerate(MOVEMENT)
@@ -49,10 +47,11 @@ class Joypad:
 
     def press(
         self,
-        buttons: Tuple[Button, ...],
+        buttons: tuple[Button, ...],
         delay: int = BUTTON_DELAY,
         replay: bool = False,
     ):
+        """Press the buttons."""
         press_button = self.BUTTON_DICT[buttons]
         self._env.step(press_button)
 
@@ -61,11 +60,9 @@ class Joypad:
 
 
 def neat_result_to_buttons(
-    result: Sequence[float], buttons_map: Dict[int, Button], threshold: float
-) -> Tuple[Button, ...]:
-    """
-    Converts the neats output to list of buttons to press
-    """
+    result: Sequence[float], buttons_map: dict[int, Button], threshold: float
+) -> tuple[Button, ...]:
+    """Converts the neats output to list of buttons to press."""
     indexes = [idx for idx, value in enumerate(result) if value > threshold]
     buttons = [buttons_map[idx] for idx in sorted(indexes)]
 

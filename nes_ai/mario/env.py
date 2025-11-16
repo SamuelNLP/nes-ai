@@ -1,10 +1,8 @@
-"""
-Super Mario Bros represented as an openai nes environment.
-"""
+"""Super Mario Bros represented as an openai nes environment."""
 
 import math
+
 from pathlib import Path
-from typing import List, Tuple
 
 from nes_ai.env import BaseEnv
 
@@ -13,9 +11,7 @@ BOX_RADIUS = 6
 
 
 class SuperMario(BaseEnv):
-    """
-    A class that makes a custom NesEnv for super mario.
-    """
+    """A class that makes a custom NesEnv for super mario."""
 
     def __init__(self):
         super().__init__(str(Path(__file__).parents[1] / "roms" / "super_mario.nes"))
@@ -23,19 +19,15 @@ class SuperMario(BaseEnv):
 
     @property
     def is_dying(self) -> bool:
-        """
-        Return True if Mario is in dying animation, False otherwise.
-        """
+        """Return True if Mario is in dying animation, False otherwise."""
         return self._player_state == 0x0B or self.ram[0x00B5] > 1
 
-    def get_input_array(self) -> List[int]:
-        """
-        Return a 13 by 13 array:
-        """
+    def get_input_array(self) -> list[int]:
+        """Return a 13 by 13 array."""
         mario_x, mario_y = self.get_mario()
         sprites = self._get_stripes()
 
-        inputs = list()
+        inputs = []
         range_ = range(
             -BOX_RADIUS * RANGE_RADIUS,
             BOX_RADIUS * RANGE_RADIUS + RANGE_RADIUS,
@@ -62,11 +54,8 @@ class SuperMario(BaseEnv):
 
         return inputs
 
-    def get_mario(self) -> Tuple[int, ...]:
-        """
-        Gets Mario position.
-        """
-
+    def get_mario(self) -> tuple[int, ...]:
+        """Gets Mario position."""
         mario_x = self.ram[0x6D] * 0x100 + self.ram[0x86]
         mario_y = self.ram[0x03B8] + RANGE_RADIUS
 
@@ -88,8 +77,8 @@ class SuperMario(BaseEnv):
             return 1
         return 0
 
-    def _get_stripes(self) -> List[Tuple[int, int]]:
-        sprites = list()
+    def _get_stripes(self) -> list[tuple[int, int]]:
+        sprites = []
 
         for slot in range(5):
             enemy = self.ram[0xF + slot]
@@ -104,6 +93,7 @@ class SuperMario(BaseEnv):
     def _player_state(self) -> int:
         """
         Return the current player state.
+
         Note:
             0x00 : Leftmost of screen
             0x01 : Climbing vine
@@ -117,5 +107,6 @@ class SuperMario(BaseEnv):
             0x09 : Cannot move
             0x0B : Dying
             0x0C : Palette cycling, can't move
+
         """
         return self.ram[0x000E]

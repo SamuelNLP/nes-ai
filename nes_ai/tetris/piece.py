@@ -1,23 +1,21 @@
-"""
-Class and functions that illustrate a Tetris piece
-"""
+"""Class and functions that illustrate a Tetris piece."""
 
 from dataclasses import dataclass
-from typing import Dict, List, Sequence, Tuple
+from typing import Sequence
 
 import numpy as np
 
 
 class Piece:
     """
-    A piece in tetris
+    A piece in tetris.
 
     Parameters
     ----------
     name : str
-        Name of the tetris piece, like `T up` for example
+        Name of the tetris piece, like `T up` for example.
     offsets : Sequence of Offset
-        Offsets of the piece in a grid like
+        Offsets of the piece in a grid like.
 
         For example T up would be like:
 
@@ -35,15 +33,18 @@ class Piece:
 
     @property
     def name(self) -> str:
+        """Return the name of the piece."""
         return self._name
 
     @property
     def offsets(self) -> Sequence["Offset"]:
+        """Return the offsets."""
         return self._offsets
 
     @property
-    def offsets_as_tuple(self) -> Tuple[int, ...]:
-        list_offsets: List[int] = list()
+    def offsets_as_tuple(self) -> tuple[int, ...]:
+        """Return the offsets as a tuple."""
+        list_offsets: list[int] = []
 
         for offset in self.offsets:
             list_offsets.extend(offset.as_tuple())
@@ -54,9 +55,9 @@ class Piece:
     def canvas(self) -> np.ndarray:
         """
         Representation of the offsets in a 5 by 5 canvas, where 1 means the piece
-            fills the cell and 0 otherwise
+            fills the cell and 0 otherwise.
 
-        For example for the T up:
+        For example, for the T up:
 
         +---+---+---+---+---+
         | 0 | 0 | 0 | 0 | 0 |
@@ -93,22 +94,25 @@ class Piece:
 
 @dataclass
 class Offset:
+    """Offset in a grid."""
+
     y: int
     x: int
 
     def as_tuple(self):
+        """Return the offset as a tuple."""
         return self.x, self.y
 
 
-def build_pieces() -> Dict[int, Piece]:
+def build_pieces() -> dict[int, Piece]:
     """
-    Helper function that build all possible pieces
+    Helper function that builds all possible pieces.
 
     Returns
     -------
     dict
-        A dict with an hex representation of the piece in the key and a Piece class in
-        the value
+        A dict with a hex representation of the piece in the key and a Piece class in
+        the value.
 
     """
     return {

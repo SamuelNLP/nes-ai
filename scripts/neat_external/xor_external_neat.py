@@ -1,6 +1,4 @@
-"""
-XOR example
-"""
+"""XOR example."""
 
 import neat  # noqa
 
@@ -10,10 +8,11 @@ xor_outputs = [(0.0,), (1.0,), (1.0,), (0.0,)]
 
 
 def eval_genomes(genomes, config_):
-    for genome_id, genome in genomes:
+    """Evaluate a list of genomes."""
+    for _, genome in genomes:
         genome.fitness = 4.0
         net = neat.nn.FeedForwardNetwork.create(genome, config_)
-        for xi_, xo_ in zip(xor_inputs, xor_outputs):
+        for xi_, xo_ in zip(xor_inputs, xor_outputs, strict=True):
             output_ = net.activate(xi_)
             genome.fitness -= (output_[0] - xo_[0]) ** 2
 
@@ -42,6 +41,6 @@ print("\nBest genome:\n{!s}".format(winner))
 # Show output of the most fit genome against training data.
 print("\nOutput:")
 winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
-for xi, xo in zip(xor_inputs, xor_outputs):
+for xi, xo in zip(xor_inputs, xor_outputs, strict=True):
     output = winner_net.activate(xi)
     print("  input {!r}, expected output {!r}, got {!r}".format(xi, xo, output))

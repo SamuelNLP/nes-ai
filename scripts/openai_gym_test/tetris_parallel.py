@@ -1,9 +1,8 @@
-"""
-Test for parallel calls on the nes-py openai environments.
-"""
+"""Test for parallel calls on the nes-py openai environments."""
 
 import os
 import random
+
 from multiprocessing import Pool
 
 from nes_py.wrappers import JoypadSpace
@@ -16,6 +15,7 @@ BUTTONS = (Button.LEFT, Button.RIGHT, Button.A, Button.B)
 
 
 def run(_):
+    """A tetris run."""
     env = Tetris()
 
     env.reset()

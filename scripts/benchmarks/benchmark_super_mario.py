@@ -1,9 +1,8 @@
-"""
-Super Mario session
-"""
+"""Super Mario session."""
 
 import logging
 import random
+
 from datetime import datetime
 
 from neats.genetic import Genetic, NetworkShape
@@ -42,12 +41,10 @@ NETWORK_INPUTS = 169
 NETWORK_OUTPUTS = 6
 
 
-@profile  # noqa
+@profile  # type: ignore[name-defined] # noqa
 def individual_run(individual: Network) -> Network:
-    """
-    An individual run
-    """
-    random.seed(datetime.now())
+    """An individual run."""
+    random.seed(int(datetime.now().timestamp()))
     mario = SuperMario()
     player = Joypad(JoypadSpace(mario, MOVEMENT))
 
@@ -73,7 +70,9 @@ def individual_run(individual: Network) -> Network:
         features = mario.get_input_array()
         instances = individual.evaluate(features)
         button_result = neat_result_to_buttons(
-            instances, BUTTONS_MAP, BUTTON_THRESHOLD  # noqa
+            instances,
+            BUTTONS_MAP,
+            BUTTON_THRESHOLD,  # noqa
         )
 
         x_mario, _ = mario.get_mario()
@@ -93,8 +92,9 @@ def individual_run(individual: Network) -> Network:
         timeout_ -= 1
 
 
-@profile  # noqa
+@profile  # type: ignore[name-defined] # noqa
 def main():
+    """Main function."""
     network_shape = NetworkShape(n_inputs=NETWORK_INPUTS, n_outputs=NETWORK_OUTPUTS)
     genetic = Genetic(
         number_individuals=NUMBER_INDIVIDUALS, network_shape=network_shape

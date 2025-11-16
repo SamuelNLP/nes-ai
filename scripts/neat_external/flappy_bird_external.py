@@ -1,12 +1,12 @@
-"""
-A NEAT run on flappy bird
-"""
+"""A NEAT run on flappy bird."""
 
 import random
+
 from datetime import datetime
 
 import neat  # noqa
 import numpy as np
+
 from ple import PLE
 from ple.games.flappybird import FlappyBird
 
@@ -14,7 +14,7 @@ WIDTH, HEIGHT = 288, 512
 
 
 def eval_genomes(genomes, config_):
-
+    """Evaluate a list of genomes."""
     play = PLE(
         FlappyBird(width=WIDTH, height=HEIGHT, pipe_gap=100),
         fps=30,
@@ -23,12 +23,12 @@ def eval_genomes(genomes, config_):
     actions = play.getActionSet()
     play.init()
 
-    for genome_id, genome in genomes:
+    for _, genome in genomes:
         fitness = []
         net = neat.nn.FeedForwardNetwork.create(genome, config_)
 
         for _ in range(5):
-            random.seed(datetime.now())
+            random.seed(int(datetime.now().timestamp()))
             play.frame_count = 0
 
             while True:

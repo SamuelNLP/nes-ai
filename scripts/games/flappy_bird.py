@@ -1,15 +1,15 @@
-"""
-A NEAT run on flappy bird
-"""
+"""A NEAT run on flappy bird."""
 
 import logging
 import pickle
 import random
+
 from datetime import datetime
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from neats.genetic import Genetic, NetworkShape
 from neats.mutation import Mutation, MutationType
 from neats.selection import TopPercentageSelection
@@ -39,7 +39,7 @@ MUTATION_PROBABILITY = {
     Mutation.RANDOM_WEIGHT: 0.02,
 }
 
-display = False
+display = True
 best_individual = None
 redirect_search_rounds = 0
 
@@ -61,8 +61,8 @@ genetic = Genetic(
     mutation_type=MutationType.SINGLE,
 )
 
-average_fitness_list = list()
-max_fitness_list = list()
+average_fitness_list = []
+max_fitness_list = []
 
 play = PLE(
     FlappyBird(width=WIDTH, height=HEIGHT, pipe_gap=100), fps=30, display_screen=display
@@ -79,10 +79,10 @@ while genetic.max_fitness < MAX_FITNESS:
     population = genetic.population
 
     for individual in population:
-        fitness = list()
+        fitness = []
 
         for _ in range(RUNS_PER_INDIVIDUAL):
-            random.seed(datetime.now())
+            random.seed(int(datetime.now().timestamp()))
             play.frame_count = 0
 
             while True:

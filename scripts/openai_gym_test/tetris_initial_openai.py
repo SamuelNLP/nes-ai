@@ -1,6 +1,4 @@
-"""
-Simple run of Tetris
-"""
+"""Simple run of Tetris."""
 
 import random
 import time

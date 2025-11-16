@@ -1,6 +1,4 @@
-"""
-Test class Field and its function
-"""
+"""Test class Field and its function."""
 
 import random
 
@@ -12,6 +10,7 @@ from nes_ai.tetris.piece import build_pieces
 
 
 def test_field_size():
+    """Test that the field size is correct."""
     valid_size_array = np.random.choice((False, True), size=FIELD_SHAPE)
     wrong_size_array = np.random.choice((False, True), size=(5, 10))
 
@@ -22,6 +21,7 @@ def test_field_size():
 
 
 def test_current_piece():
+    """Test the current piece."""
     pieces = build_pieces()
 
     valid_point = Point(1, 2)
@@ -30,10 +30,15 @@ def test_current_piece():
     current_piece = CurrentPiece(random.choice(tuple(pieces.values())), valid_point)
 
     assert none_current_piece.piece is None and none_current_piece.position is None
-    assert current_piece.piece and current_piece.position.is_valid
+    assert (
+        current_piece.piece is not None
+        and current_piece.position is not None
+        and current_piece.position.is_valid
+    )
 
 
 def test_laid_down_piece():
+    """Test the laid-down piece."""
     expected_center = (3, 17)
 
     pieces = build_pieces()
@@ -47,4 +52,7 @@ def test_laid_down_piece():
 
     array_with_piece = field._array_with_piece_down(current_piece)
 
-    assert array_with_piece[expected_center[1], expected_center[0]] == 1
+    assert array_with_piece is not None
+
+    if array_with_piece is not None:
+        assert array_with_piece[expected_center[1], expected_center[0]] == 1

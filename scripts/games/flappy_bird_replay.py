@@ -1,14 +1,14 @@
-"""
-A NEAT run on flappy bird with a saved bird
-"""
+"""A NEAT run on flappy bird with a saved bird."""
 
 import logging
 import pickle
 import random
 import time
+
 from datetime import datetime
 
 import numpy as np
+
 from ple import PLE
 from ple.games.flappybird import FlappyBird
 
@@ -18,7 +18,7 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler())
 
 WIDTH, HEIGHT = 288, 512
-random.seed(datetime.now())
+random.seed(int(datetime.now().timestamp()))
 np.random.seed(int(datetime.now().timestamp()))
 
 display = True
@@ -27,7 +27,7 @@ path_ = "runs/flappy_n=500_2021-02-14_00:02:43/iteration=385_max=24768.pickle"
 with open(path_, "rb") as handle:
     genetic = pickle.load(handle)
 
-individual = list(sorted(genetic.population, reverse=True))[0]
+individual = sorted(genetic.population, reverse=True)[0]
 individual.draw()
 
 for network in sorted(genetic.population)[0:10]:

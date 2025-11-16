@@ -1,15 +1,15 @@
-"""
-Super Mario session
-"""
+"""Super Mario session."""
 
 import logging
 import os
 import pickle
 import random
+
 from datetime import datetime
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+
 from neats.genetic import Genetic, NetworkShape
 from neats.genome import Activation
 from neats.mutation import Mutation
@@ -68,10 +68,8 @@ iteration = None
 
 
 def individual_run(individual: Network) -> Network:
-    """
-    An individual run
-    """
-    random.seed(datetime.now())
+    """An individual run."""
+    random.seed(int(datetime.now().timestamp()))
     mario = SuperMario()
     player = Joypad(JoypadSpace(mario, MOVEMENT))
 
@@ -96,7 +94,9 @@ def individual_run(individual: Network) -> Network:
         # play
         features = mario.get_input_array()
         button_result = neat_result_to_buttons(
-            individual.evaluate(features), BUTTONS_MAP, BUTTON_THRESHOLD  # noqa
+            individual.evaluate(features),
+            BUTTONS_MAP,
+            BUTTON_THRESHOLD,  # noqa
         )
 
         x_mario, _ = mario.get_mario()
@@ -147,7 +147,7 @@ if __name__ == "__main__":
         individual_run=individual_run,
         genetic=genetic,
         folder=folder,
-        parallel_num=os.cpu_count() - 1,
+        parallel_num=(os.cpu_count() or 4) - 1,
     )
 
     average_fitness, max_fitness = session.start(

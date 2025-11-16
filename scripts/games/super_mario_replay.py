@@ -1,6 +1,4 @@
-"""
-Super Mario replay
-"""
+"""Super Mario replay."""
 
 import logging
 import pickle
@@ -10,9 +8,9 @@ from nes_py.wrappers import JoypadSpace
 
 from nes_ai.input import MOVEMENT, Button, Joypad, neat_result_to_buttons
 from nes_ai.mario.env import SuperMario
-from scripts.super_mario.super_mario import (
-    BUTTON_THRESHOLD,
+from scripts.games.super_mario import (
     BUTTONS_MAP,
+    BUTTON_THRESHOLD,
     THRESHOLD_FRAME,
 )
 
@@ -26,7 +24,7 @@ path_ = "runs/mario_n=300_2021-04-02_01:58:59/iteration=224_max=3175.pickle"
 with open(path_, "rb") as handle:
     genetic = pickle.load(handle)
 
-individual = list(sorted(genetic.population, reverse=True))[0]
+individual = sorted(genetic.population, reverse=True)[0]
 individual.draw()
 
 mario = SuperMario()

@@ -1,15 +1,11 @@
-"""
-Common info api classes
-"""
+"""Common info api classes."""
 
 from dataclasses import dataclass
 from enum import Enum, auto
 
 
 class GamePhase(Enum):
-    """
-    Phases that a tetris game can have
-    """
+    """Phases that a tetris game can have."""
 
     LEGAL = auto()
     TITLE = auto()
@@ -20,9 +16,7 @@ class GamePhase(Enum):
 
 
 class Info(Enum):
-    """
-    Information that can be requested from the game's RAM
-    """
+    """Information that can be requested from the game's RAM."""
 
     SCORE = auto()
     LINES = auto()
@@ -39,6 +33,8 @@ class Info(Enum):
 
 @dataclass
 class Statistics:
+    """Tetris statistics."""
+
     score: int = 0
     pieces: int = 0
     lines: int = 0

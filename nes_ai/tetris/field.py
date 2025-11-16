@@ -1,22 +1,18 @@
-"""
-Class and functions that illustrate a Tetris field
-"""
+"""Class and functions that illustrate a Tetris field."""
 
 from dataclasses import dataclass
-from typing import Optional, Tuple
 
 import numpy as np
 
+from prerequisites import require
+
 from nes_ai.tetris.piece import Piece
-from nes_ai.util.prerequisites import require
 
 FIELD_SHAPE = (20, 10)
 
 
 class Field:
-    """
-    Representation of a Tetris Field as an array
-    """
+    """Representation of a Tetris Field as an array."""
 
     def __init__(self, array: np.ndarray):
         require(
@@ -27,13 +23,14 @@ class Field:
 
     @property
     def array(self) -> np.ndarray:
+        """Field as an array."""
         return self._array
 
     @property
     def is_full(self) -> bool:
         """
-        Checks if the field is completed by pieces, or for example where the game ends
-            and the field is filled
+        Checks if the field is completed by pieces, or, for example, where the game ends
+            and the field is filled.
         """
         return self._array[0].all()
 
@@ -50,9 +47,7 @@ class Field:
         return np.array_equal(self.array, other.array)
 
     def array_with_piece(self, current_piece: "CurrentPiece") -> np.ndarray:
-        """
-        Returns an array of the field with the piece overlaid
-        """
+        """Returns an array of the field with the piece overlaid."""
         grid = np.copy(self.array)
 
         if (
@@ -69,11 +64,8 @@ class Field:
 
         return grid
 
-    def features(self, piece: "CurrentPiece", next_piece: Piece) -> Optional[Tuple]:
-        """
-        Returns the features to be consumed by the network
-        """
-
+    def features(self, piece: "CurrentPiece", next_piece: Piece) -> tuple | None:
+        """Returns the features to be consumed by the network."""
         # without pieces
         # heights: 10 features
         heights = (self._array != 0).argmax(axis=0)
@@ -160,11 +152,8 @@ class Field:
             )
         )
 
-    def _array_with_piece_down(self, piece: "CurrentPiece") -> Optional[np.ndarray]:
-        """
-        Simulates the piece in the final position
-        """
-
+    def _array_with_piece_down(self, piece: "CurrentPiece") -> np.ndarray | None:
+        """Simulates the piece in the final position."""
         if not piece.piece or not piece.position:
             return None
 
@@ -190,19 +179,19 @@ class Field:
 
 @dataclass
 class Point:
-    """
-    Representation of a coordinate point in the tetris field
-    """
+    """Representation of a coordinate point in the tetris field."""
 
     x: int
     y: int
 
     @property
     def is_valid(self) -> bool:
+        """Check if the point is valid."""
         return self.x > 0 and self.y > 0
 
     @property
-    def as_tuple(self) -> Tuple[int, int]:
+    def as_tuple(self) -> tuple[int, int]:
+        """Return the point as a tuple."""
         return self.x, self.y
 
     def __repr__(self):
@@ -211,9 +200,8 @@ class Point:
 
 @dataclass
 class CurrentPiece:
-    # noinspection PyUnresolvedReferences
     """
-    Representation of the current piece in the field
+    Representation of the current piece in the field.
 
     Parameters
     ----------
@@ -224,8 +212,8 @@ class CurrentPiece:
 
     """
 
-    piece: Optional[Piece] = None
-    position: Optional[Point] = None
+    piece: Piece | None = None
+    position: Point | None = None
 
     def __repr__(self):
         return f"CurrentPiece(piece={self.piece}, position={self.position})"

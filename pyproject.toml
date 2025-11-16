@@ -1,17 +1,119 @@
-[tool.black]
+[project]
+name = "nes_ai"
+description = "Nes AI - a bot that tries to play NES games."
+authors = [{ name = "SamuelNLP" }]
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dynamic = ["version"]
+in-project = true
+dependencies = [
+    "aenum",
+    "numpy",
+    "networkx",
+    "nes-py",
+    "pygame",
+    "matplotlib",
+    "sympy",
+    "prerequisites>=1.0.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "pytest-dotenv",
+]
+
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+tag-pattern = "(?P<version>\\d+\\.\\d+\\.\\d+)"
+fallback-version = "0.0.0"
+
+[tool.ruff]
+lint.select = ["A", "B", "C", "D", "E", "F", "I", "N", "W"]
+lint.ignore = ["D104", "D105", "D107", "D203", "D205", "D212", "D401", "F811"]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+lint.fixable = ["A", "B", "C", "E", "F", "I"]
+lint.unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+# Same as Black.
 line-length = 88
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-  | noteboooks
-)/
-'''
+
+# Assume Python 3.13.
+target-version = "py313"
+
+[tool.ruff.format]
+# format docstrings
+docstring-code-format = true
+
+[tool.ruff.lint.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+case-sensitive = true
+force-wrap-aliases = true
+combine-as-imports = true
+lines-between-types = 1
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+
+[tool.coverage.run]
+omit = [
+  "*/app.py",
+  "*/logger.py",
+  "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_also = [
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+#check_untyped_defs = true
+#disallow_untyped_defs = true
